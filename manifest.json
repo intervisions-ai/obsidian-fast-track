@@ -1,0 +1,9 @@
+{
+  "id": "fast-track",
+  "name": "Fast Track",
+  "version": "1.2.0",
+  "minAppVersion": "1.4.0",
+  "description": "A quiet, monochrome intermittent fasting timer with milestone countdowns. Logs completed fasts to your daily note.",
+  "author": "you",
+  "isDesktopOnly": false
+}
