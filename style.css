@@ -1,0 +1,304 @@
+.ft-wrap {
+  padding: 10px 10px;
+  font-family: var(--font-interface);
+  color: var(--text-normal);
+  --ft-accent: var(--interactive-accent);
+  --ft-accent-hover: var(--interactive-accent-hover);
+  --ft-accent-text: var(--text-on-accent);
+}
+
+.ft-card.is-achieved {
+  --ft-accent: var(--color-green, #2ea043);
+  --ft-accent-hover: var(--color-green, #2ea043);
+  --ft-accent-text: #ffffff;
+}
+
+.ft-card {
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m, 8px);
+  padding: 10px 12px 10px;
+  transition: border-color 0.3s ease;
+}
+
+.ft-card.is-achieved {
+  border-color: var(--ft-accent);
+}
+
+.ft-head {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ft-state-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ft-state {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  color: var(--text-muted);
+}
+
+.ft-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-faint);
+}
+
+.ft-dot.is-live {
+  background: var(--ft-accent);
+  animation: ft-pulse 2s ease-in-out infinite;
+}
+
+.ft-dot.is-paused {
+  background: var(--text-muted);
+}
+
+@keyframes ft-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.ft-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ft-dial {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+
+.ft-dial svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.ft-dial-track {
+  fill: none;
+  stroke: var(--background-modifier-border);
+  stroke-width: 5;
+}
+
+.ft-dial-fill {
+  fill: none;
+  stroke: var(--ft-accent);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dashoffset 0.4s ease, stroke 0.3s ease;
+}
+
+.ft-dial-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-text);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.ft-time-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.ft-elapsed {
+  font-family: var(--font-text);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--text-normal);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.ft-card.is-achieved .ft-elapsed {
+  color: var(--ft-accent);
+}
+
+.ft-elapsed .ft-sec {
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-left: 2px;
+}
+
+.ft-since {
+  font-family: var(--font-text);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.ft-since.is-editable {
+  cursor: pointer;
+  border-bottom: 1px dotted transparent;
+  display: inline-block;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.ft-since.is-editable:hover {
+  color: var(--ft-accent);
+  border-bottom-color: var(--ft-accent);
+}
+
+.ft-side-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.ft-btn {
+  font-family: var(--font-interface);
+  font-size: 11px;
+  padding: 5px 10px;
+  border: 1px solid var(--background-modifier-border-hover);
+  border-radius: var(--radius-s, 4px);
+  background: transparent;
+  color: var(--text-normal);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.ft-btn:hover {
+  background: var(--background-modifier-hover);
+}
+
+.ft-btn.is-primary {
+  background: var(--ft-accent);
+  color: var(--ft-accent-text);
+  border-color: var(--ft-accent);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.ft-btn.is-primary:hover {
+  background: var(--ft-accent-hover);
+  border-color: var(--ft-accent-hover);
+  filter: brightness(0.95);
+}
+
+.ft-mrow {
+  display: flex;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.ft-m {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  padding: 2px 0;
+}
+
+.ft-m + .ft-m {
+  border-left: 1px solid var(--background-modifier-border);
+}
+
+.ft-m-goal {
+  font-size: 10px;
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+
+.ft-m-count {
+  font-family: var(--font-text);
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.ft-m.is-hit .ft-m-goal {
+  color: var(--ft-accent);
+}
+
+.ft-m.is-hit .ft-m-count {
+  color: var(--ft-accent);
+  font-style: italic;
+}
+
+.ft-m.is-active .ft-m-goal {
+  color: var(--text-normal);
+}
+
+.ft-m.is-active .ft-m-count {
+  color: var(--text-normal);
+}
+
+.ft-empty {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.ft-empty-time {
+  font-family: var(--font-text);
+  font-size: 26px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.ft-empty-sub {
+  font-family: var(--font-text);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.ft-empty-controls {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.ft-modal-content {
+  padding: 8px 4px;
+}
+
+.ft-modal-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.ft-modal-label {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.ft-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.ft-quick-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
