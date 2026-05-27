@@ -1,61 +1,75 @@
 # Fast Track
 
-A quiet, monochrome intermittent fasting timer for Obsidian. Lives in the right sidebar. Uses your theme's accent color for everything that matters.
+An intermittent-fasting timer for Obsidian. Lives in the right sidebar. Each completed fast becomes its own note in your vault. A dashboard note auto-aggregates all fasts into a heatmap, an hour-by-day grid, and a sortable table.
 
 ## Install
 
-1. In your vault, open `.obsidian/plugins/` (create the `plugins` folder if it isn't there).
-2. Create a folder called `fast-track` inside it.
-3. Drop these three files into that folder:
-   - `manifest.json`
-   - `main.js`
-   - `styles.css`
-4. In Obsidian: **Settings → Community plugins**, turn off Restricted Mode if needed, then refresh the plugin list and enable **Fast Track**.
+1. Put `manifest.json`, `main.js`, and `styles.css` in `<vault>/.obsidian/plugins/fast-track/`.
+2. Settings → Community plugins → enable Fast Track.
 
-The pane will auto-open in the right sidebar. You can also open it via the ribbon icon (clock) or the command palette: `Fast Track: Open Fast Track`.
+The sidebar opens automatically. Ribbon icon (clock) or the command palette also work.
 
-## Use
+## How it works
 
-- **Begin fast** — starts the timer. The dial fills around the ring as you approach your furthest milestone.
-- **Custom goal** — opens a small modal for a one-off custom duration. It slots into the milestone row alongside the defaults.
-- **Pause / resume** — pause time doesn't count toward your fast.
-- **End fast** — opens a modal where you can drop optional notes, then logs the fast to your daily note.
+**Active fast** lives in `data.json`. **Completed fasts** are written as individual notes inside `Fasting/Fasts/` (configurable). Each fast note has YAML frontmatter as the source of truth:
 
-## How fasts are logged
-
-When you end a fast, a callout block is appended to the daily note matching the fast's **start date** (so midnight-spanning fasts don't get split across two notes).
-
-Example output:
-
-```md
-> [!fast] fast · 16h 47m
-> 6:42 pm → 11:29 am (Mar 16)
-> milestones: 12h ✓ · 16h ✓
->
-> notes: easy morning, mild hunger around hour 14.
+```yaml
+---
+fast-id: fkx8a2bz7d
+start: 2026-05-27T18:42:00
+end: 2026-05-28T11:29:00
+duration-sec: 60420
+duration-hr: 16.78
+milestones-hit: [12h, 16h]
+notes: easy morning
+---
 ```
 
-If the daily note doesn't exist yet, it gets created.
+Edit the frontmatter manually, or use the dashboard. After editing, run **Rebuild fasting dashboard** (command palette) and the dashboard regenerates from the notes.
+
+## The dashboard
+
+`Fasting/Fasting.md` is the dashboard. Anything you write outside the `<!-- fast-track:auto-start -->` / `<!-- fast-track:auto-end -->` markers is preserved on rebuild. Inside the markers, Fast Track maintains:
+
+- **Summary** — total fasts, total hours, average, longest, current streak.
+- **Heatmap** — GitHub-style calendar grid colored by daily fasting hours.
+- **Hour-by-day** — each row is a day, columns are the 24 hours, filled cells show when you were fasting.
+- **Fasts** — sortable table of every fast with a link to its note.
+
+The dashboard regenerates whenever a fast ends or you click **Rebuild** in settings.
+
+## Daily-note callouts
+
+When you end a fast, a small callout block is also written to the daily note for that end date:
+
+```md
+<!-- fast-track:id=fkx8a2bz7d -->
+> [!fast] Fast Complete: 16 hours 47 mins
+> 6:42 pm (May 27) → 11:29 am (May 28)
+> milestones: 12h ✓ · 16h ✓
+> 
+> details: [[2026-05-27-fast-fkx8a2bz7d]]
+```
+
+The hidden marker on the first line is how Fast Track finds and rewrites the callout when you edit the fast. The link at the bottom opens the per-fast note for full details.
 
 ## Settings
 
-- **Daily note folder** — where your daily notes live (leave blank for vault root).
-- **Daily note filename format** — defaults to `YYYY-MM-DD`. Supports `YYYY`, `MM`, `DD`.
-- **Callout type** — defaults to `fast`. You can change this to `tip`, `info`, or any custom callout you've styled in your theme/snippets.
+- **Fasting folder / Fasts subfolder / Dashboard filename** — where things go.
+- **Daily note folder / format / heading** — where the callout is inserted.
+- **Callout type** — defaults to `fast`. Custom callouts can be styled via CSS snippets.
+- **Show pause button** — off by default.
+- **Heatmap weeks / Hour-by-day days** — how much history to show in the dashboard charts.
 
-## Styling the `fast` callout (optional)
+## Commands
 
-Add this to a CSS snippet (`Settings → Appearance → CSS snippets`) to give the callout a custom look:
-
-```css
-.callout[data-callout="fast"] {
-  --callout-color: var(--interactive-accent-rgb);
-  --callout-icon: lucide-timer;
-}
-```
+- `Open Fast Track` — opens the sidebar.
+- `Start or end fast` — toggle the timer (or open the end-fast modal if running).
+- `Open fasting dashboard` — opens `Fasting.md`.
+- `Rebuild fasting dashboard` — re-scans fast notes and regenerates dashboard.
 
 ## Notes
 
-- State persists across Obsidian restarts (stored in plugin data).
-- The timer ticks in real time using the wall clock, so closing Obsidian and reopening it later resumes correctly.
-- Milestone hits are silent — only the UI updates. No toasts, no system notifications.
+- The sidebar timer is the canonical UI for *running* a fast.
+- Editing a *completed* fast: open its note, edit frontmatter, run Rebuild. UI for in-place editing in the dashboard is planned but not in v1.0.
+- Deleting a fast note removes it from the dashboard on next rebuild. The daily-note callout is not auto-removed.
